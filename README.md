@@ -22,4 +22,4 @@ Script for Scribus in order to generate a calendar in pdf with following options
 
     You can hide the separate layers for grid, moons, holiday texts and images. Use of different styles for month title, weekday names, week numbers, moon phases, holiday texts, mini calendars and dates which can be changed individually. Automatic change to abbreviated weekday names if cells are too small. Many build-in controls
 
-![sample calendars.jpg]
+![sample calendars.jpg](sample calendars.jpg)
