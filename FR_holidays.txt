@@ -1,0 +1,13 @@
+variable,easter,0,,Pâques,0
+variable,easter,1,,Lundi de Pâques,1
+variable,easter,39,,Jeudi de l'Ascension,1
+variable,easter,49,,Pentecôte,0
+variable,easter,50,,Lundi de Pentecôte,1
+fixed,1,1,,Jour de l'an,1
+fixed,5,1,,Fête du Travail,1
+fixed,5,8,,Victoire 1945,1
+fixed,7,14,,Fête nationale,1
+fixed,8,15,,Assomption,1
+fixed,11,1,,Toussaint,1
+fixed,11,11,,Armistice 1918,1
+fixed,12,25,,Noël,1
