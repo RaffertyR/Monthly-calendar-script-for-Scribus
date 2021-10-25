@@ -1,4 +1,4 @@
-# Monthly-calendar-script-for-Scribus (Works with Scribus 1.5+ on Linux and Windows 10)
+# Monthly-calendar-script-for-Scribus (Works with Scribus 1.5.6+ on Linux and Windows 10)
 
 Script for Scribus in order to generate a calendar in pdf with following options:
 
