@@ -2,14 +2,14 @@
 # -*- coding: utf-8 -*-
 
 """
-VERSION: 4.0 of 2020-10-16
+VERSION: 4.1 of 2021-11-04
 AUTHOR: Rafferty River. 
 LICENSE: GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007. 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY.
 
 DESCRIPTION & USAGE:
-(tested on Scribus 1.5.6svn with python 3 on Windows 10 and Linux Mint 20).
+(tested on Scribus 1.5.7 with python 3 on Windows 10 and Linux Mint 20).
 This Scribus script generates a classic monthly calendar with following options:
 1) You can choose between more than 20 languages (default is English). 
 You may add, change or delete languages in the localization list in this script.
@@ -673,7 +673,7 @@ class calcHolidays:
 'holidays.txt'-file or cancel")
         holidaysList=list()
         try:
-            csvfile = open(holidaysFile, 'rt')
+            csvfile = open(holidaysFile, mode="rt",  encoding="utf8")
         except:
             print("Holidays wil NOT be shown.")
             messageBox("Warning:",
