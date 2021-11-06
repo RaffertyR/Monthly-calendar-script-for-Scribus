@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-VERSION: 4.1 of 2021-11-04
+VERSION: 4.1 of 2021-11-06
 AUTHOR: Rafferty River. 
 LICENSE: GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007. 
 This program is distributed in the hope that it will be useful,
@@ -311,7 +311,6 @@ class ScMonthCalendar:
             createLayer(self.layerMoons)
         if self.drawHolidays:
             createLayer(self.layerHolidays)
-        self.createGrid()
         if self.drawImg:
             createLayer(self.layerImg)
 
