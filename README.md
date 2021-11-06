@@ -25,3 +25,6 @@ Script for Scribus in order to generate a calendar in pdf with following options
 # Please read the instructions file!
 
 ![SampleCalendars](SampleCalendars.jpg)
+
+
+![SampleCalendars2](US-calendar-2023-page001.jpg)
