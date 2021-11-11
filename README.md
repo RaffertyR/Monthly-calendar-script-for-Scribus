@@ -4,7 +4,7 @@ Script for Scribus in order to generate a calendar in pdf with following options
 
 1) You can choose between more than 20 languages (default is English).
 
-2) You can choose a font from the list of fonts available on your system. Please check if all special characters for your language are available in the choosen font! You can change fonts afterwards in the Scribus styles menu.
+2) You can choose a font from the list of fonts available on your system. Please check if all special characters for your language are available in the choosen font! You can change fonts afterwards in the Scribus styles menu. Default font is Symbola font (https://fontlibrary.org/en/font/symbola).
 
 3) Calendar year and week starting day are to be given. Saturdays and Sundays will be printed in grey.
 
