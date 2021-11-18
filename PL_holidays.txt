@@ -1,0 +1,17 @@
+variable,easter,-46,,Popielec,0
+variable,easter,-2,,Wielki Piątek,0
+variable,easter,0,,Wielkanoc,0
+variable,easter,1,,Poniedziałek Wielkanocny,1
+variable,easter,49,,Zielone Świątki,0
+variable,easter,60,,Boże Ciało,1
+fixed,1,1,,Nowy Rok,1
+fixed,1,6,,Święto Trzech Króli,1
+fixed,3,19,,Dzień Jedności Kaszubów,0
+fixed,5,1,,Święto Pracy,1
+fixed,5,3,,Święto Konstytucji 3 Maja,1
+fixed,8,15,,Wniebowzięcie Najświętszej Maryi Panny,0
+fixed,11,1,,Wszystkich Świętych,1
+fixed,11,11,,Święto Niepodległości,1
+fixed,12,24,,Wigilia,0
+fixed,12,25,,Pierwszy dzień Bożego Narodzenia,1
+fixed,12,26,,Drugi dzień Bożego Narodzenia,1
