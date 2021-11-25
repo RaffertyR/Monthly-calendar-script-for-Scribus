@@ -1,0 +1,11 @@
+variable,easter,-2,,Karfreitag,1
+variable,easter,0,,Ostern,0
+variable,easter,1,,Ostermontag,1
+variable,easter,39,,Christi Himmelfahrt,1
+variable,easter,49,,Pfingsten,0
+variable,easter,50,,Pfingstmontag,1
+fixed,1,1,,Neujahr,1
+fixed,5,1,,Tag der Arbeit,1
+fixed,10,3,,Tag der Deutschen Einheit,1
+fixed,12,25,,erster Weihnachtstag,1
+fixed,12,26,,zweiter Weihnachtstag,1
