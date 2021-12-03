@@ -1,6 +1,6 @@
 variable,easter,-46,,Popielec,0
 variable,easter,-2,,Wielki Piątek,0
-variable,easter,0,,Wielkanoc,0
+variable,easter,0,,Wielkanoc,1
 variable,easter,1,,Poniedziałek Wielkanocny,1
 variable,easter,49,,Zielone Świątki,0
 variable,easter,60,,Boże Ciało,1
@@ -22,3 +22,4 @@ fixed,12,13,,Dzień Pamięci Ofiar Stanu Wojennego,0
 fixed,12,24,,Wigilia,0
 fixed,12,25,,Pierwszy dzień Bożego Narodzenia,1
 fixed,12,26,,Drugi dzień Bożego Narodzenia,1
+fixed,12,27,,Narodowy Dzień Zwycięskiego Powstania Wielkopolskiego,0
