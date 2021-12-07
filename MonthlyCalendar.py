@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-VERSION: 4.1 of 2021-11-06
+VERSION: 5.0 of 2021-12-07
 AUTHOR: Rafferty River. 
 LICENSE: GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007. 
 This program is distributed in the hope that it will be useful,
@@ -18,26 +18,26 @@ Please respect the Python syntax.
 Please check if all special characters for your language are available in the chosen font! 
 You can change fonts of many items afterwards in the Styles menu (Edit - Styles).
 3) Calendar year and week starting day are to be given. Saturdays and Sundays will 
-be printed in dark grey (many colors can be changed afterwards with Edit - Colors and Fills).
+be printed by default in separate colors (many colors can be changed afterwards with
+Edit - Colors and Fills).
 4) Option to show week numbers with (or without) a week numbers heading in 
-your local language. Calendar week numbers will be printed in dark grey.
+your local language. 
 5) Option to import holidays and special days from a 'holidays.txt' file for your country. 
-Automatic calculation of the holiday dates each calendar year. 
-Official holidays will be printed in red. 
+Automatic calculation of the recurring holiday dates for each calendar year. 
 6) Option to import a 'moonphases.txt' file in order to draw the moon phase symbols 
 on the calendar.
 7) Select one or more months or the whole year.
-8) You have the possibility to determine where on the page the calender month will 
-be drawn with the offsets from top and / or left margin. Option to draw an 
-empty image frame within the top and / or left 'offset' area and to get 
-an 'inner' margin between this frame and the calendar grid.
-9) Option to draw draw mini calendars for previous and next months
-in the calendar month heading.
-10) You can hide the separate layers for grid, moons, holiday texts and images.  
-Use of different styles for month title, weekday names, week numbers, moon phases, 
-holiday texts, mini calendars and dates which can be changed individually. 
-Automatic change to abbreviated weekday names if cells are too small. 
-Many build-in controls.
+8) You have the possibility to determine where on the page the calendar month will 
+be drawn with the offsets from top and / or left margin. Option to draw an empty 
+image frame within the top and / or left 'offset' area and to get an 'inner' margin 
+between this frame and the calendar grid.
+9) Option to draw draw mini calendars for previous and next months in the calendar 
+month heading.
+10) You can easily change the default styles and colors for month title, weekday names, 
+week numbers, holiday dates and texts, special dates, weekend days, normal dates, 
+mini calendars and moon phases afterwards.  You can hide the separate layers for moons, 
+holiday texts and images. Automatic change to abbreviated weekday names if cells 
+are too small. Many other build-in controls.
 
 Parts of this script are taken from the CalendarWizard script from Petr Vanek
 and Bernhard Reiter which is provided with Scribus.
@@ -177,7 +177,6 @@ class ScMonthCalendar:
         self.mycal = calendar.Calendar(firstDay)
         # layers
         self.layerCal = 'Calendar'
-        self.layerGrid = 'Grid'
         self.layerMoons = 'Moons'
         self.layerHolidays = 'Holidays'
         self.layerImg = 'Images'
@@ -187,7 +186,7 @@ class ScMonthCalendar:
         self.smallCel = False # cell width / height is more than 1.33
         self.displac = 0 # variable for various displacements
         # character styles
-        self.cStylMonth = "char_style_Month"
+        self.cStylMonthHeading = "char_style_MonthHeading"
         self.cStylDayNames = "char_style_DayNames"
         self.cStylWeekNo = "char_style_WeekNo"
         self.cStylMoons = "char_style_Moons"
@@ -195,7 +194,7 @@ class ScMonthCalendar:
         self.cStylDate = "char_style_Date"
         self.cStylMini = "char_style_Mini"
         # paragraph styles
-        self.pStyleMonth = "par_style_Month"
+        self.pStyleMonthHeading = "par_style_MonthHeading"
         self.pStyleDayNames = "par_style_DayNames"
         self.pStyleWeekNo = "par_style_WeekNo"
         self.pStyleMoons = "par_style_Moons"
@@ -204,7 +203,9 @@ class ScMonthCalendar:
         self.pStyleMini = "par_style_Mini"
         # line styles
         self.gridLineStyle = "grid_Line_Style"
-        self.gridMonthHeadingStyle = "grid_Month_Heading_Style"
+        self.gridLineStyleDayNames = "grid_DayNames_Style"
+        self.gridLineStyleWeekNo = "grid_WeekNo_Style"
+        self.gridLineStyleMonthHeading = "grid_MonthHeading_Style"
         # other settings
         self.firstPage = True # create only 2nd 3rd ... pages. No 1st one.
         calendar.setfirstweekday(firstDay)
@@ -217,7 +218,7 @@ class ScMonthCalendar:
         originalUnit = getUnit()
         setUnit(UNIT_POINTS)
         self.setupDocVariables()
-        scribus.createCharStyle(name=self.cStylMonth,font=self.cFont,
+        scribus.createCharStyle(name=self.cStylMonthHeading,font=self.cFont,
             fontsize=((self.rowSize * self.scalingFactor) // 1.5), fillcolor="txtMonthHeading")
         scribus.createCharStyle(name=self.cStylDayNames, font=self.cFont,
             fontsize=(self.rowSize // 4), fillcolor="txtDayNames")
@@ -231,9 +232,9 @@ class ScMonthCalendar:
             fontsize=(self.rowSize // 2), fillcolor="txtDate")
         scribus.createCharStyle(name=self.cStylMini, font=self.cFont,
             fontsize=(self.rowSize // 8), fillcolor="txtDate")
-        scribus.createParagraphStyle(name=self.pStyleMonth, linespacingmode=0,
+        scribus.createParagraphStyle(name=self.pStyleMonthHeading, linespacingmode=0,
             linespacing=((self.rowSize*self.scalingFactor)//1.5), alignment=ALIGN_CENTERED,
-            charstyle=self.cStylMonth)
+            charstyle=self.cStylMonthHeading)
         scribus.createParagraphStyle(name=self.pStyleDayNames, linespacingmode=2,
             alignment=ALIGN_CENTERED, firstindent=3,
             charstyle=self.cStylDayNames)
@@ -261,20 +262,28 @@ class ScMonthCalendar:
     def setupDocVariables(self):
         """ Compute base metrics here. Page layout is bordered by margins
             and empty image frame(s). """
-         # define default calendar colors
+        # default calendar colors
         defineColorCMYK("Black", 0, 0, 0, 255)
         defineColorCMYK("White", 0, 0, 0, 0)
-        defineColorCMYK("txtMonthHeading", 0, 0, 0, 255) # default is Black
-        defineColorCMYK("txtDayNames", 0, 0, 0, 255) # default is Black
-        defineColorCMYK("txtWeekNo", 0, 0, 0, 200) # default is Dark Grey
-        defineColorCMYK("txtWeekend", 0, 0, 0, 200) # default is Dark Grey
-        defineColorCMYK("txtHoliday", 0, 234, 246, 0) # default is Red
-        defineColorCMYK("txtDate", 0, 0, 0, 255) # default is Black
         defineColorCMYK("fillMonthHeading", 0, 0, 0, 0) # default is White
-        defineColorCMYK("fillDayNames", 0, 0, 0, 0) # default is White
+        defineColorCMYK("txtMonthHeading", 0, 0, 0, 255) # default is Black
+        defineColorCMYK("fillDayNames", 0, 0, 0, 200) # default is Dark Grey
+        defineColorCMYK("txtDayNames", 0, 0, 0, 0) # default is White
+        defineColorCMYK("fillWeekNo", 0, 0, 0, 200) # default is Dark Grey
+        defineColorCMYK("txtWeekNo", 0, 0, 0, 0) # default is White
         defineColorCMYK("fillDate", 0, 0, 0, 0) # default is White
-        defineColorCMYK("gridColor", 0, 0, 0, 200) # default is Dark Grey
+        defineColorCMYK("txtDate", 0, 0, 0, 255) # default is Black
+        defineColorCMYK("fillWeekend", 0, 0, 0, 25) # default is Light Grey
+        defineColorCMYK("fillWeekend2", 0, 0, 0, 25) # default is Light Grey
+        defineColorCMYK("txtWeekend", 0, 0, 0, 200) # default is Dark Grey
+        defineColorCMYK("fillHoliday", 0, 0, 0, 25) # default is Light Grey
+        defineColorCMYK("txtHoliday", 0, 234, 246, 0) # default is Red
+        defineColorCMYK("fillSpecialDate", 0, 0, 0, 0) # default is White
+        defineColorCMYK("txtSpecialDate", 0, 0, 0, 128) # default is Middle Grey
+        defineColorCMYK("gridColor", 0, 0, 0, 128) # default is Middle Grey
         defineColorCMYK("gridMonthHeading", 0, 0, 0, 0) # default is White
+        defineColorCMYK("gridDayNames", 0, 0, 0, 128) # default is Middle Grey
+        defineColorCMYK("gridWeekNo", 0, 0, 0, 128) # default is Middle Grey
         # document measures
         page = getPageSize()
         self.pageX = page[0]
@@ -305,7 +314,32 @@ class ScMonthCalendar:
         y = x*baseLine+baseLine/2
         setBaseLine(baseLine, y * 0.8) # for correct aligment of weekdays names
                                                       #  with ascender and descender characters
-        self.createGrid()
+        # line styles
+        scribus.createCustomLineStyle(self.gridLineStyle, [
+            {
+                'Color': "gridColor",
+                'Width': 1
+            }
+        ]);
+        scribus.createCustomLineStyle(self.gridLineStyleMonthHeading, [
+            {
+                'Color': "gridMonthHeading",
+                'Width': 1
+            }
+        ]);
+        scribus.createCustomLineStyle(self.gridLineStyleDayNames, [
+            {
+                'Color': "gridDayNames",
+                'Width': 1
+            }
+        ]);
+        scribus.createCustomLineStyle(self.gridLineStyleWeekNo, [
+            {
+                'Color': "gridWeekNo",
+                'Width': 1
+            }
+        ]);
+        # layers
         createLayer(self.layerCal)
         if self.drawMoons:
             createLayer(self.layerMoons)
@@ -313,58 +347,7 @@ class ScMonthCalendar:
             createLayer(self.layerHolidays)
         if self.drawImg:
             createLayer(self.layerImg)
-
-    def createGrid(self):
-        """ Create a grid of lines on a separate layer """
-        createLayer(self.layerGrid)
         self.masterPage = masterPageNames()[0] #'Normal'
-        editMasterPage(self.masterPage)
-        setActiveLayer(self.layerGrid) # create rectangles with background color
-        scribus.createCustomLineStyle(self.gridLineStyle, [
-            {
-                'Color': "gridColor",
-                'Width': 1
-            }
-        ]);
-        scribus.createCustomLineStyle(self.gridMonthHeadingStyle, [
-            {
-                'Color': "gridMonthHeading",
-                'Width': 1
-            }
-        ]);
-        ob = createRect(self.marginL + self.offsetX,
-            self.marginT + self.offsetY ,
-            self.width - self.offsetX, 1.5 * self.rowSize)
-        setFillColor("fillMonthHeading", ob)
-        setLineColor("gridMonthHeading", ob)
-        ob = createRect(self.marginL + self.offsetX,
-            self.marginT + self.offsetY + 1.5 * self.rowSize,
-            self.width - self.offsetX, 0.5 * self.rowSize)
-        setFillColor("fillDayNames", ob)
-        setLineColor("gridColor", ob)
-        ob = createRect(self.marginL + self.offsetX,
-            self.marginT + self.offsetY + 2 * self.rowSize,
-            self.width - self.offsetX, self.height - self.offsetY - 2 * self.rowSize)
-        setFillColor("fillDate", ob)
-        setLineColor("gridColor", ob)
-        rowCnt = (1.5, 2, 3, 4, 5, 6, 7, 8)
-        for ix in range(0, len(rowCnt)): # draw horizontal lines
-            ob = createLine(self.marginL + self.offsetX, self.marginT + self.offsetY 
-                + rowCnt[ix] * self.rowSize,
-                self.marginL + self.offsetX + self.colSize * self.cols,
-                self.marginT + self.offsetY + rowCnt[ix] * self.rowSize)
-            setCustomLineStyle(self.gridLineStyle, ob)
-        if self.weekNr:
-            colCnt = (0, 0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5)
-        else:
-            colCnt = (0, 1, 2, 3, 4, 5, 6, 7)
-        for ix in range(0, len(colCnt)): # draw vertical lines
-            ob = createLine(self.marginL + self.offsetX + colCnt[ix] * self.colSize,
-                self.marginT + self.offsetY + 1.5 * self.rowSize, 
-                self.marginL + self.offsetX + colCnt[ix] * self.colSize,
-                self.marginT + self.offsetY + self.rows * self.rowSize)
-            setCustomLineStyle(self.gridLineStyle, ob)
-        closeMasterPage()
 
     def createImg(self):
         """ Wrapper for everytime-the-same image frame. """
@@ -422,6 +405,8 @@ class ScMonthCalendar:
                                  self.colSize*0.5, self.rowSize)
                 yr, mt, dt = str((week[0])).split("-")
                 setText(str(datetime.date(int(yr), int(mt), int(dt)).isocalendar()[1]), cel)
+                setFillColor("fillWeekNo", cel)
+                setCustomLineStyle(self.gridLineStyleWeekNo, cel)
                 deselectAll()
                 selectObject(cel)
                 setParagraphStyle(self.pStyleWeekNo, cel)
@@ -434,6 +419,8 @@ class ScMonthCalendar:
                                  self.marginT+self.offsetY + rowCnt * self.rowSize,
                                  self.colSize, self.rowSize)
                 colCnt += 1
+                setFillColor("fillDate", cel)
+                setCustomLineStyle(self.gridLineStyle, cel)
                 if day.month == (month+1):
                     setText(str(day.day), cel)
                     deselectAll()
@@ -446,16 +433,24 @@ class ScMonthCalendar:
                     else:
                         x = 6
                     if (int(colCnt) == x) or (int(colCnt) == 7):
-                        setTextColor("txtWeekend", cel)
                         weekend = True
+                        setTextColor("txtWeekend", cel)
+                        setFillColor("fillWeekend", cel)
                     holidayColor = False # holiday
                     for x in range(len(self.holidaysList)):
                             if (self.holidaysList[x][0] == (day.year) and
                                 self.holidaysList[x][1] == str(day.month) and
                                 self.holidaysList[x][2] == str(day.day)): 
                                 if self.holidaysList[x][4] == '1':
-                                    setTextColor("txtHoliday", cel)
                                     holidayColor = True
+                                    setTextColor("txtHoliday", cel)
+                                    setFillColor("fillHoliday", cel)
+                                else:
+                                    setTextColor("txtSpecialDate", cel)
+                                    if getFillColor(cel) == "fillWeekend":
+                                        setFillColor("fillWeekend", cel)
+                                    else:
+                                        setFillColor("fillSpecialDate", cel)
                                 setActiveLayer(self.layerHolidays)
                                 txtHoliday = createText(self.marginL+self.offsetX + (colCnt - 1)* self.colSize,
                                     self.marginT+self.offsetY + rowCnt * self.rowSize,
@@ -496,7 +491,44 @@ class ScMonthCalendar:
                                 if holidayColor:
                                     setTextColor("txtHoliday", cel)
                         setActiveLayer(self.layerCal)
+                else:  # fill previous or next month empty weekend cells
+                    if calendar.firstweekday() == 6:
+                        x = 1
+                    else:
+                        x = 6
+                    if (int(colCnt) == x) or (int(colCnt) == 7):
+                        setFillColor("fillWeekend2", cel)
             rowCnt += 1
+
+        while rowCnt < 8:
+            self.createEmptyWeekRow(rowCnt)
+            rowCnt += 1
+
+    def createEmptyWeekRow(self, rowCnt):
+        """ Add empty week row(s) at bottom of month """
+        if self.weekNr:
+            cel = createText(self.marginL + self.offsetX,
+                             self.marginT + self.offsetY + rowCnt * self.rowSize, 
+                             self.colSize*0.5, self.rowSize)
+            setFillColor("fillWeekNo", cel)
+            setCustomLineStyle(self.gridLineStyleWeekNo, cel)
+            colCnt = 0.5
+        else:
+            colCnt = 0
+        for y in range(0, 7):
+            cel = createText(self.marginL+self.offsetX + colCnt * self.colSize,
+                             self.marginT+self.offsetY + rowCnt * self.rowSize,
+                             self.colSize, self.rowSize)
+            if calendar.firstweekday() == 6:
+                x = 0
+            else:
+                x = 5
+            if (int(colCnt) == x) or (int(colCnt) == 6):
+                setFillColor("fillWeekend2", cel)
+            else:
+                setFillColor("fillDate", cel)
+            setCustomLineStyle(self.gridLineStyle, cel)
+            colCnt += 1
 
     def createLayout(self):
         """ Create the page and optional bells and whistles around """
@@ -517,8 +549,10 @@ class ScMonthCalendar:
         setText(mtHd.upper() + " " + str(self.year), cel)
         deselectAll()
         selectObject(cel)
-        scribus.setParagraphStyle(self.pStyleMonth, cel)
+        scribus.setParagraphStyle(self.pStyleMonthHeading, cel)
         setTextVerticalAlignment(ALIGNV_CENTERED, cel)
+        setFillColor("fillMonthHeading", cel)
+        setCustomLineStyle(self.gridLineStyleMonthHeading, cel)
         selectObject(cel)
         moveSelectionToBack()
         """ Draw calendar header: Weekday names. """
@@ -536,7 +570,9 @@ class ScMonthCalendar:
             selectObject(cel)
             setParagraphStyle(self.pStyleDayNames, cel)
             setTextVerticalAlignment(ALIGNV_TOP, cel)
-            # setTextColor("txtWeekNo", cel)
+            setTextColor("txtWeekNo", cel)
+            setFillColor("fillWeekNo", cel)
+            setCustomLineStyle(self.gridLineStyleWeekNo, cel)
             colCnt = 0.5
         for j in self.dayOrder: # day names
             cel = createText(self.marginL + self.offsetX + colCnt * self.colSize,
@@ -546,6 +582,9 @@ class ScMonthCalendar:
             selectObject(cel)
             setParagraphStyle(self.pStyleDayNames, cel)
             setTextVerticalAlignment(ALIGNV_TOP, cel)
+            setTextColor("txtDayNames", cel)
+            setFillColor("fillDayNames", cel)
+            setCustomLineStyle(self.gridLineStyleDayNames, cel)
             colCnt+=1
 
     def createMiniHeader(self, monthName, colCnt):
