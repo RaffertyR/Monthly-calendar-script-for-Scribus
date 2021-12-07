@@ -6,11 +6,11 @@ Script for Scribus in order to generate a calendar in pdf with following options
 
 2) You can choose a font from the list of fonts available on your system. Please check if all special characters for your language are available in the choosen font! You can change fonts afterwards in the Scribus styles menu. Default font is Symbola font (https://fontlibrary.org/en/font/symbola).
 
-3) Calendar year and week starting day are to be given. Saturdays and Sundays will be printed in grey.
+3) Calendar year and week starting day are to be given. Saturdays and Sundays will be printed by default in separate colors (many colors can be changed afterwards with Edit - Colors and Fills).
 
-4) Option to show week numbers with (or without) a week numbers heading in your local language. Calendar week numbers will be printed in grey.
+4) Option to show week numbers with (or without) a week numbers heading in your local language.
 
-5) Option to import holidays and special days from a ‘holidays.txt’ file for your country. See the sample *holidays.txt-files for the layout of the entries. Official holidays will be printed in red.
+5) Option to import holidays and special days from a 'holidays.txt'-file for your country. Automatic calculation of the recurring holiday dates for each calendar year. See the sample holidays.txt-files for the layout of the entries.
 
 6) Option to import a ‘moonphases.txt’ file in order to draw the moon phase symbols on the calendar.
 
@@ -20,7 +20,7 @@ Script for Scribus in order to generate a calendar in pdf with following options
 
 9) Option to draw draw mini calendars for previous and next months in the calendar month heading.
 
-10) You can hide the separate layers for grid, moons, holiday texts and images. Use of different styles for month title, weekday names, week numbers, moon phases, holiday texts, mini calendars and dates which can be changed individually. Automatic change to abbreviated weekday names if cells are too small. Many build-in controls.
+10) You can easily change the default styles and colors for month title, weekday names, week numbers, holiday dates and texts, special dates, weekend days, normal dates, mini calendars and moon phases afterwards.  You can hide the separate layers for moons, holiday texts and images. Automatic change to abbreviated weekday names if cells are too small. Many other build-in controls.
 
 # Please read the instructions file!
 
