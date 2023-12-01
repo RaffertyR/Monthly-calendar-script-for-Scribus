@@ -1,0 +1,21 @@
+variable,easter,0,,velika noč,0
+variable,easter,1,,velikonočni ponedeljek,1
+variable,easter,49,,binkoštna nedelja,1
+fixed,1,1,,novo leto,1
+fixed,1,2,,novo leto,1
+fixed,2,8,,slovenski kulturni praznik,1
+fixed,4,27,,dan upora proti okupatorju,1
+fixed,5,1,,praznik dela,1
+fixed,5,2,,praznik dela,1
+fixed,6,8,,dan Primoža Trubarja,0
+fixed,6,25,,dan državnosti,1
+fixed,8,15,,Marijino vnebovzetje,1
+fixed,8,17,,združitev prekmurskih Slovencev z matičnim narodom,0
+fixed,9,15,,vrnitev Primorske k matični domovini,0
+fixed,9,23,,dan slovenskega športa,0
+fixed,10,25,,dan suverenosti,0
+fixed,10,31,,dan reformacije,1
+fixed,11,1,,dan spomina na mrtve,1
+fixed,11,23,,dan Rudolfa Maistra,0
+fixed,12,25,,božič,1
+fixed,12,26,,dan samostojnosti in enotnosti,1
